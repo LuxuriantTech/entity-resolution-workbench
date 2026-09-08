@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "normalization_version": "norm-v1",
+  "blocking_version": "block-v1",
+  "scoring_version": "score-v1",
+  "decision_version": "decision-v1",
+  "max_catalog_records": 100,
+  "max_pair_count": 10000,
+  "max_candidates_per_left": 20,
+  "max_csv_file_bytes": 1000000,
+  "max_csv_field_characters": 4096,
+  "max_normalized_field_characters": 4096,
+  "max_source_id_characters": 128,
+  "max_price_integer_digits": 10,
+  "max_price_fraction_digits": 2,
+  "match_threshold": "0.86",
+  "review_threshold": "0.62",
+  "minimum_bilateral_margin": "0.08",
+  "minimum_evidence_fields": 2,
+  "weights": {
+    "name": "0.45",
+    "brand": "0.20",
+    "sku": "0.25",
+    "price": "0.10"
+  },
+  "price_zero_score_relative_delta": "0.20",
+  "price_contradiction_relative_delta": "0.35",
+  "brand_contradiction_below": "0.40",
+  "name_support_at_least": "0.85"
+}

@@ -1,0 +1,18 @@
+{
+  "description": "Small synthetic product catalogues for the local review journey.",
+  "files": {
+    "left": {
+      "path": "left.csv",
+      "rows": 4,
+      "sha256": "23e941b65636ad9060b36071ac104f045856a80266204c0a5b6680c35d29a6a2"
+    },
+    "right": {
+      "path": "right.csv",
+      "rows": 4,
+      "sha256": "c82e3bd462b06666e6e3377e0591f82d9ce49ae67657d5688516f47e10bb5d39"
+    }
+  },
+  "fixture_id": "catalogue-desk-v1",
+  "schema_version": 1,
+  "source": "Project-authored synthetic fixture; no real or personal data."
+}

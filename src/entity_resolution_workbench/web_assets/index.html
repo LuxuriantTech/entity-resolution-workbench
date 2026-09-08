@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A local review desk for explainable synthetic catalogue matching.">
+  <title>Entity Resolution Workbench</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to the workbench</a>
+  <header class="site-header">
+    <div class="brand-lockup" aria-label="Entity Resolution Workbench">
+      <span class="brand-mark" aria-hidden="true">ER</span>
+      <span>Entity Resolution Workbench</span>
+    </div>
+    <div class="local-status"><span aria-hidden="true"></span> Local session only</div>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Catalogue review desk</p>
+        <h1 id="page-title" tabindex="-1">See where two catalogues agree, and where judgment is needed.</h1>
+        <p class="lede">Run the project’s deterministic matcher, compare its evidence, and keep
+          uncertain decisions with a human reviewer.</p>
+      </div>
+      <dl class="boundary-note">
+        <div><dt>Data</dt><dd>Synthetic product records only</dd></div>
+        <div><dt>Processing</dt><dd>Inside this local process</dd></div>
+        <div><dt>Review</dt><dd>Temporary until reset or stop</dd></div>
+      </dl>
+    </section>
+
+    <div class="data-notice" role="note">
+      <strong>Use synthetic product catalogue data only.</strong>
+      This workbench does not detect personal data and does not certify that an upload is safe.
+    </div>
+
+    <nav class="journey" aria-label="Workbench progress">
+      <ol>
+        <li data-step="1" aria-current="step"><span>1</span> Choose</li>
+        <li data-step="2"><span>2</span> Map</li>
+        <li data-step="3"><span>3</span> Match</li>
+        <li data-step="4"><span>4</span> Review</li>
+      </ol>
+    </nav>
+
+    <div id="error-panel" class="error-panel" role="alert" tabindex="-1" hidden>
+      <div>
+        <p class="eyebrow">The request stopped safely</p>
+        <h2 id="error-title">Check the catalogue and try again</h2>
+        <p id="error-message"></p>
+      </div>
+      <button id="dismiss-error" class="button secondary" type="button">Return to the form</button>
+    </div>
+
+    <section id="input-panel" class="work-panel" aria-labelledby="input-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Step 1</p>
+          <h2 id="input-title">Choose two catalogues</h2>
+        </div>
+        <p>Start with the included example, or bring two bounded CSV files with product records.</p>
+      </div>
+
+      <form id="catalogue-form">
+        <fieldset class="source-options">
+          <legend>Catalogue source</legend>
+          <label class="source-card">
+            <input type="radio" name="source-kind" value="fixture" checked>
+            <span class="source-copy">
+              <strong>Use the sample catalogues</strong>
+              <span>Four records on each side, including clear, unrelated, and ambiguous pairs.</span>
+            </span>
+            <span class="recommended">Recommended</span>
+          </label>
+          <label class="source-card">
+            <input type="radio" name="source-kind" value="upload">
+            <span class="source-copy">
+              <strong>Import two CSV files</strong>
+              <span>UTF-8, up to 1 MB and 100 records per file. You will map the columns.</span>
+            </span>
+          </label>
+        </fieldset>
+
+        <div id="upload-fields" class="upload-grid" hidden>
+          <label class="file-field" for="left-file">
+            <span><strong>Catalogue A</strong><small>First supplier CSV</small></span>
+            <input id="left-file" name="left-file" type="file" accept=".csv,text/csv">
+          </label>
+          <label class="file-field" for="right-file">
+            <span><strong>Catalogue B</strong><small>Second supplier CSV</small></span>
+            <input id="right-file" name="right-file" type="file" accept=".csv,text/csv">
+          </label>
+        </div>
+
+        <label id="synthetic-confirmation" class="confirmation" hidden>
+          <input id="synthetic-only" type="checkbox">
+          <span>I confirm these files contain synthetic product catalogue data only.</span>
+        </label>
+
+        <div class="actions">
+          <button id="prepare-button" class="button primary" type="submit">Prepare catalogues</button>
+          <span class="action-note">Nothing is uploaded to a remote service.</span>
+        </div>
+      </form>
+    </section>
+
+    <section id="mapping-panel" class="work-panel" aria-labelledby="mapping-title" hidden>
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Step 2</p>
+          <h2 id="mapping-title" tabindex="-1">Map the columns</h2>
+        </div>
+        <p>Tell the matcher which source column represents each product attribute.</p>
+      </div>
+      <div id="catalogue-previews" class="preview-grid"></div>
+      <form id="mapping-form">
+        <div id="mapping-tables" class="mapping-grid"></div>
+        <div class="actions split-actions">
+          <button id="back-to-input" class="button secondary" type="button">Choose different files</button>
+          <button id="run-button" class="button primary" type="submit">Run the matcher</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="busy-panel" class="busy-panel" aria-live="polite" aria-atomic="true" hidden>
+      <span class="busy-mark" aria-hidden="true"></span>
+      <div><strong id="busy-title">Preparing catalogues</strong><p id="busy-detail">Validating bytes and structure.</p></div>
+    </section>
+
+    <section id="results-panel" aria-labelledby="results-title" hidden>
+      <div class="results-heading">
+        <div>
+          <p class="eyebrow">Step 4</p>
+          <h2 id="results-title" tabindex="-1">Matching decisions</h2>
+          <p id="results-summary">Every decision below comes from the real matcher.</p>
+        </div>
+        <div class="results-actions">
+          <a id="export-link" class="button secondary" href="/api/v1/session/export.csv" download>Export this session</a>
+          <button id="reset-button" class="button quiet" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div id="decision-counts" class="decision-counts" aria-label="Decision counts"></div>
+
+      <form id="filter-form" class="filter-bar" role="search">
+        <label for="decision-filter">Decision
+          <select id="decision-filter" name="decision">
+            <option value="">All decisions</option>
+            <option value="MATCH">Strong match</option>
+            <option value="REVIEW">Needs review</option>
+            <option value="NO_MATCH">Not a match</option>
+          </select>
+        </label>
+        <label class="search-field" for="query-filter">Find a record
+          <input id="query-filter" name="query" type="search" autocomplete="off" placeholder="Name, brand, SKU, or ID">
+        </label>
+        <button class="button secondary" type="submit">Apply filters</button>
+        <button id="clear-filters" class="button quiet" type="button">Clear</button>
+      </form>
+
+      <section class="result-region" aria-live="polite" aria-atomic="false">
+        <h3 class="visually-hidden">Filtered pairs</h3>
+        <p id="filter-summary" class="filter-summary"></p>
+        <ol id="pair-list" class="pair-list"></ol>
+        <nav id="pagination" class="pagination" aria-label="Result pages" hidden>
+          <button id="previous-page" class="button secondary" type="button">Previous</button>
+          <span id="page-status"></span>
+          <button id="next-page" class="button secondary" type="button">Next</button>
+        </nav>
+        <div id="empty-results" class="empty-state" hidden>
+          <p class="eyebrow">No pairs in this view</p>
+          <h3>Try another decision or search term.</h3>
+          <button id="empty-clear" class="button secondary" type="button">Show all decisions</button>
+        </div>
+      </section>
+    </section>
+
+    <section aria-live="polite" class="visually-hidden" id="status-announcer"></section>
+  </main>
+
+  <footer>
+    <p>Local evidence aid. Similarity scores are not probabilities or business-quality guarantees.</p>
+    <p>Session reviews disappear when you reset or stop the server.</p>
+  </footer>
+
+  <dialog id="pair-dialog" aria-labelledby="pair-dialog-title">
+    <div class="dialog-shell">
+      <div class="dialog-heading">
+        <div><p class="eyebrow" id="dialog-decision"></p><h2 id="pair-dialog-title">Pair comparison</h2></div>
+        <button id="close-dialog" class="icon-button" type="button" aria-label="Close comparison">×</button>
+      </div>
+      <div id="dialog-error-panel" class="error-panel dialog-error-panel" role="alert" tabindex="-1" hidden>
+        <div>
+          <p class="eyebrow">The review stopped safely</p>
+          <h3>Review not saved</h3>
+          <p id="dialog-error-message"></p>
+        </div>
+        <button id="dismiss-dialog-error" class="button secondary" type="button">Return to review</button>
+      </div>
+      <div id="pair-detail"></div>
+    </div>
+  </dialog>
+
+  <noscript><p class="noscript">JavaScript is required to call the local matcher. No remote service is used.</p></noscript>
+  <script type="module" src="/assets/app.js"></script>
+</body>
+</html>

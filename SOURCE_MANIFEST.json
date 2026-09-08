@@ -1,0 +1,249 @@
+{
+  "schema_version": 1,
+  "scope": "Public runtime source; canonical local Git history is not copied",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "source_sha256": "91ac4fb73bd0ab92d0ad75cc172f24a0add8294caed692f3b84bac74ca88816a",
+      "release_sha256": "91ac4fb73bd0ab92d0ad75cc172f24a0add8294caed692f3b84bac74ca88816a"
+    },
+    {
+      "path": ".python-version",
+      "source_sha256": "f50159fad3f4319868eb38717b91d55843c41e9803014c8de05e116a6d0bcfdc",
+      "release_sha256": "f50159fad3f4319868eb38717b91d55843c41e9803014c8de05e116a6d0bcfdc"
+    },
+    {
+      "path": "config/matching-v1.json",
+      "source_sha256": "3cecaf179d6c06b7516ad7685c550c0e75d0642b1f498c4a12cc05dfdc79a098",
+      "release_sha256": "3cecaf179d6c06b7516ad7685c550c0e75d0642b1f498c4a12cc05dfdc79a098"
+    },
+    {
+      "path": "pyproject.toml",
+      "source_sha256": "0f55eeeebff26ea1c2f893605d142cc4ebef5a8b6ffaecca362e64d09b7653f1",
+      "release_sha256": "0f55eeeebff26ea1c2f893605d142cc4ebef5a8b6ffaecca362e64d09b7653f1"
+    },
+    {
+      "path": "scripts/workbench_control.py",
+      "source_sha256": "b7ef541a61cdbc60caf47fb16bec4076ce312a933257a3802ed4f4b5c676aa0c",
+      "release_sha256": "b7ef541a61cdbc60caf47fb16bec4076ce312a933257a3802ed4f4b5c676aa0c"
+    },
+    {
+      "path": "src/entity_resolution_workbench/__init__.py",
+      "source_sha256": "4bcf9c17a424bb78f51d4bc91d83733101edfbc483d2fcac59c35ec1a3b38ae9",
+      "release_sha256": "4bcf9c17a424bb78f51d4bc91d83733101edfbc483d2fcac59c35ec1a3b38ae9"
+    },
+    {
+      "path": "src/entity_resolution_workbench/audit.py",
+      "source_sha256": "408f85dd6101b0930fda5ef83c8b09fa45f67fdf6bc15db40bf5d45217732403",
+      "release_sha256": "408f85dd6101b0930fda5ef83c8b09fa45f67fdf6bc15db40bf5d45217732403"
+    },
+    {
+      "path": "src/entity_resolution_workbench/cli.py",
+      "source_sha256": "e5927e5ec90466c0553c5e796a73010a05ebcbe789f73513cf2fb62c0638e6fa",
+      "release_sha256": "e5927e5ec90466c0553c5e796a73010a05ebcbe789f73513cf2fb62c0638e6fa"
+    },
+    {
+      "path": "src/entity_resolution_workbench/common.py",
+      "source_sha256": "dc0876de32241549b2d921e74a12f9fde00cd3c66f2dbbd372df25747d5d2e42",
+      "release_sha256": "dc0876de32241549b2d921e74a12f9fde00cd3c66f2dbbd372df25747d5d2e42"
+    },
+    {
+      "path": "src/entity_resolution_workbench/database.py",
+      "source_sha256": "759e855d2fa6c1c966adaf4f8e846b22956cb4f1b82f21603c718f99f22610fa",
+      "release_sha256": "759e855d2fa6c1c966adaf4f8e846b22956cb4f1b82f21603c718f99f22610fa"
+    },
+    {
+      "path": "src/entity_resolution_workbench/evaluator.py",
+      "source_sha256": "95bcca809fe5cde1ff409a5419731e4006f25f858d24eb9a7760fc2d0a11aa0f",
+      "release_sha256": "95bcca809fe5cde1ff409a5419731e4006f25f858d24eb9a7760fc2d0a11aa0f"
+    },
+    {
+      "path": "src/entity_resolution_workbench/generator.py",
+      "source_sha256": "376fd3222fd84afecce1f2278472ed6287cd42d1c47b7dec2ffffa9b15234130",
+      "release_sha256": "376fd3222fd84afecce1f2278472ed6287cd42d1c47b7dec2ffffa9b15234130"
+    },
+    {
+      "path": "src/entity_resolution_workbench/identity.py",
+      "source_sha256": "166b34bd060fd379f0d3215fe56c3b47a0d1ef33f629653ecd04a3d22cc3a7dd",
+      "release_sha256": "166b34bd060fd379f0d3215fe56c3b47a0d1ef33f629653ecd04a3d22cc3a7dd"
+    },
+    {
+      "path": "src/entity_resolution_workbench/matcher.py",
+      "source_sha256": "264d6a4846d519d918626a201d00a51a6a75eeecab30572217de558b179c03b0",
+      "release_sha256": "264d6a4846d519d918626a201d00a51a6a75eeecab30572217de558b179c03b0"
+    },
+    {
+      "path": "src/entity_resolution_workbench/normalization.py",
+      "source_sha256": "e45a4a80da7424f4756e7171e8c9ed1ea74076dc26556ed4c4da0b84a49b28a3",
+      "release_sha256": "e45a4a80da7424f4756e7171e8c9ed1ea74076dc26556ed4c4da0b84a49b28a3"
+    },
+    {
+      "path": "src/entity_resolution_workbench/paths.py",
+      "source_sha256": "420a8277a30c72301991528635b030d3d2cba365a9ef4f818a38b17fb3e1285f",
+      "release_sha256": "420a8277a30c72301991528635b030d3d2cba365a9ef4f818a38b17fb3e1285f"
+    },
+    {
+      "path": "src/entity_resolution_workbench/publication.py",
+      "source_sha256": "fc7aa0d24f271f3fa743bbcde081eb2f24dd78ae66282925ec71ef70e50cea44",
+      "release_sha256": "fc7aa0d24f271f3fa743bbcde081eb2f24dd78ae66282925ec71ef70e50cea44"
+    },
+    {
+      "path": "src/entity_resolution_workbench/reporting.py",
+      "source_sha256": "093c99f1cdc447718625dac09b96a68b3fac84ac4858658fa4d1be2d4b10b6ec",
+      "release_sha256": "093c99f1cdc447718625dac09b96a68b3fac84ac4858658fa4d1be2d4b10b6ec"
+    },
+    {
+      "path": "src/entity_resolution_workbench/scoring.py",
+      "source_sha256": "f62074c8c679af3092a3be9d736e734cd1c98b2acfb3ed0ab32758e8ef2a177f",
+      "release_sha256": "f62074c8c679af3092a3be9d736e734cd1c98b2acfb3ed0ab32758e8ef2a177f"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_adapter.py",
+      "source_sha256": "c4ecda48712b2669d51c18ab4ac610a05dfc3bc4d88dacfc0de0d2ef0f677a22",
+      "release_sha256": "c4ecda48712b2669d51c18ab4ac610a05dfc3bc4d88dacfc0de0d2ef0f677a22"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_api.py",
+      "source_sha256": "609bf82723855f1a8b7f21677f4a3d7ba893e3b072d273d5fd4b168d6d6b27d9",
+      "release_sha256": "609bf82723855f1a8b7f21677f4a3d7ba893e3b072d273d5fd4b168d6d6b27d9"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_assets/app.js",
+      "source_sha256": "92548ee540ce34b5fce528c5a25c3762ec4e5b11e19b13c59768d8142f838448",
+      "release_sha256": "92548ee540ce34b5fce528c5a25c3762ec4e5b11e19b13c59768d8142f838448"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_assets/favicon.svg",
+      "source_sha256": "d75546f652956b7b7c878bd7f733de8570a0a15c185d8d3211921d430db41e83",
+      "release_sha256": "d75546f652956b7b7c878bd7f733de8570a0a15c185d8d3211921d430db41e83"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_assets/index.html",
+      "source_sha256": "6b7cd5bb8482f0691cf68cb8eddca811cacff07c026e81562015153f71375d9d",
+      "release_sha256": "6b7cd5bb8482f0691cf68cb8eddca811cacff07c026e81562015153f71375d9d"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_assets/styles.css",
+      "source_sha256": "e6ee952aef7425eee01f1994a3dc0b7da3c5709456de86811557a9d10611a80b",
+      "release_sha256": "e6ee952aef7425eee01f1994a3dc0b7da3c5709456de86811557a9d10611a80b"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_fixtures/catalogue-desk-v1/SOURCES.md",
+      "source_sha256": "d9d4d2a5e7a2f8fbaf6ecb3b47b3ef15e21cffe720210792610445d66dc829c4",
+      "release_sha256": "d9d4d2a5e7a2f8fbaf6ecb3b47b3ef15e21cffe720210792610445d66dc829c4"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_fixtures/catalogue-desk-v1/left.csv",
+      "source_sha256": "23e941b65636ad9060b36071ac104f045856a80266204c0a5b6680c35d29a6a2",
+      "release_sha256": "23e941b65636ad9060b36071ac104f045856a80266204c0a5b6680c35d29a6a2"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_fixtures/catalogue-desk-v1/manifest.json",
+      "source_sha256": "8851a14f82a8214cc9bd1d046f36c54cd789c735e32e9500fb27d46074946110",
+      "release_sha256": "8851a14f82a8214cc9bd1d046f36c54cd789c735e32e9500fb27d46074946110"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_fixtures/catalogue-desk-v1/right.csv",
+      "source_sha256": "c82e3bd462b06666e6e3377e0591f82d9ce49ae67657d5688516f47e10bb5d39",
+      "release_sha256": "c82e3bd462b06666e6e3377e0591f82d9ce49ae67657d5688516f47e10bb5d39"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_inputs.py",
+      "source_sha256": "39433ca8cac4c9b7a44533e359831dd1e188c49ee4f5268b384d861527b5d1d1",
+      "release_sha256": "39433ca8cac4c9b7a44533e359831dd1e188c49ee4f5268b384d861527b5d1d1"
+    },
+    {
+      "path": "src/entity_resolution_workbench/web_server.py",
+      "source_sha256": "ce8673b25fb9f1c8bc010fcf788df95383b6b595277a8c0b0da623df2219a95b",
+      "release_sha256": "ce8673b25fb9f1c8bc010fcf788df95383b6b595277a8c0b0da623df2219a95b"
+    },
+    {
+      "path": "tests/conftest.py",
+      "source_sha256": "83255a7cbbce4d26e776f126ab0f03b3eed37b34c1dfb0987b11d98883c5b12b",
+      "release_sha256": "83255a7cbbce4d26e776f126ab0f03b3eed37b34c1dfb0987b11d98883c5b12b"
+    },
+    {
+      "path": "tests/test_adversarial_invariants.py",
+      "source_sha256": "2239933ca3fb54fcdd0f67d1f79600a7cc3c7fed2699bbb86a347513755f07d8",
+      "release_sha256": "2239933ca3fb54fcdd0f67d1f79600a7cc3c7fed2699bbb86a347513755f07d8"
+    },
+    {
+      "path": "tests/test_bounded_io.py",
+      "source_sha256": "15acd1f525151887e836285a9377e4ef6edacd9147977bd9403b889f7cee258e",
+      "release_sha256": "15acd1f525151887e836285a9377e4ef6edacd9147977bd9403b889f7cee258e"
+    },
+    {
+      "path": "tests/test_cli_workflow.py",
+      "source_sha256": "927053cde417a5eff53c90d3d266dc179949e763258e8b688222aa196b1d2a00",
+      "release_sha256": "927053cde417a5eff53c90d3d266dc179949e763258e8b688222aa196b1d2a00"
+    },
+    {
+      "path": "tests/test_contract_gaps.py",
+      "source_sha256": "04ea3e0d9240d05542f2c4e3a79e86185f74b7d5f7b821e56fd155da3ea3941e",
+      "release_sha256": "04ea3e0d9240d05542f2c4e3a79e86185f74b7d5f7b821e56fd155da3ea3941e"
+    },
+    {
+      "path": "tests/test_generation_and_ingestion.py",
+      "source_sha256": "6c60d6f4822e011dec0ae9a05e57afe019664fa2c1113d301205cc28d52f69df",
+      "release_sha256": "6c60d6f4822e011dec0ae9a05e57afe019664fa2c1113d301205cc28d52f69df"
+    },
+    {
+      "path": "tests/test_pipeline_evaluation.py",
+      "source_sha256": "f4f6943b1807c4352baf076cfaf6ec8e2c0400d84db8ef1ed2d5a3714fc5ff58",
+      "release_sha256": "24b291f8b1d0fd8db72523070374c832421735add03c162c289522be84c8aa25"
+    },
+    {
+      "path": "tests/test_relational_contract.py",
+      "source_sha256": "9d4bdd9f48d16cf48fcfe552194e77184663e1df384007e4a94f9343b99abc94",
+      "release_sha256": "9d4bdd9f48d16cf48fcfe552194e77184663e1df384007e4a94f9343b99abc94"
+    },
+    {
+      "path": "tests/test_report_accessibility.py",
+      "source_sha256": "70c5d293d5a28150f511c147ddc3b54ba91327b80814425c96238a5e2eccd203",
+      "release_sha256": "70c5d293d5a28150f511c147ddc3b54ba91327b80814425c96238a5e2eccd203"
+    },
+    {
+      "path": "tests/test_reviewer_refutations.py",
+      "source_sha256": "4156c2e71f07a8e6eb176a2fa79d59862cea95b894b15cb002d0c28d16a1de7a",
+      "release_sha256": "4156c2e71f07a8e6eb176a2fa79d59862cea95b894b15cb002d0c28d16a1de7a"
+    },
+    {
+      "path": "tests/test_scoring_and_decisions.py",
+      "source_sha256": "b667ded0d7a43ccb103258ba7c0f340a9ecb3d25b05cf342224d4306a04f3f6d",
+      "release_sha256": "b667ded0d7a43ccb103258ba7c0f340a9ecb3d25b05cf342224d4306a04f3f6d"
+    },
+    {
+      "path": "tests/test_web_adapter.py",
+      "source_sha256": "4213a1c01ea0133a7d094d0d52ac1e78ce5078d10ce8189af298e2ccd2abccac",
+      "release_sha256": "4213a1c01ea0133a7d094d0d52ac1e78ce5078d10ce8189af298e2ccd2abccac"
+    },
+    {
+      "path": "tests/test_web_api.py",
+      "source_sha256": "34c45835299e1976fac3cd71db367f43f76eb2267d535e9692548b9fbb8c8cd2",
+      "release_sha256": "34c45835299e1976fac3cd71db367f43f76eb2267d535e9692548b9fbb8c8cd2"
+    },
+    {
+      "path": "tests/test_web_inputs.py",
+      "source_sha256": "2f3d43da6c9c71028f78ec651ac05c7ba6ceacf194e3da9071dce65884ffd1e5",
+      "release_sha256": "2f3d43da6c9c71028f78ec651ac05c7ba6ceacf194e3da9071dce65884ffd1e5"
+    },
+    {
+      "path": "tests/test_web_server_assets.py",
+      "source_sha256": "a07ddefe5dba79f07437c34e85bfae3b517ed2545bd33ea5551b48e947275e31",
+      "release_sha256": "a07ddefe5dba79f07437c34e85bfae3b517ed2545bd33ea5551b48e947275e31"
+    },
+    {
+      "path": "tests/test_workbench_cli.py",
+      "source_sha256": "fa214d27cfb7bf485b64035741894fbea33ce41159026399ef8772a82ccce87f",
+      "release_sha256": "fa214d27cfb7bf485b64035741894fbea33ce41159026399ef8772a82ccce87f"
+    },
+    {
+      "path": "uv.lock",
+      "source_sha256": "2708c8fbd5c69e2ce67f7e2f001a16f8f54083362a85f2d105b4b90bacd06df7",
+      "release_sha256": "2708c8fbd5c69e2ce67f7e2f001a16f8f54083362a85f2d105b4b90bacd06df7"
+    }
+  ],
+  "release_adjustments": [
+    "Removed a private-checkpoint assertion that Git has no remote from the documentation/tooling test; public clones normally have origin. All runtime assertions retained."
+  ]
+}

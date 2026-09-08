@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "application_source_unchanged": true,
+  "runtime_test_files": [
+    "tests/test_adversarial_invariants.py",
+    "tests/test_bounded_io.py",
+    "tests/test_cli_workflow.py",
+    "tests/test_contract_gaps.py",
+    "tests/test_generation_and_ingestion.py",
+    "tests/test_pipeline_evaluation.py",
+    "tests/test_relational_contract.py",
+    "tests/test_report_accessibility.py",
+    "tests/test_reviewer_refutations.py",
+    "tests/test_scoring_and_decisions.py",
+    "tests/test_web_adapter.py",
+    "tests/test_web_api.py",
+    "tests/test_web_inputs.py",
+    "tests/test_web_server_assets.py",
+    "tests/test_workbench_cli.py"
+  ],
+  "excluded_categories": [
+    "private CPL adoption and orchestration records",
+    "historical evidence hashes and fixed build-artifact pins tied to the canonical private checkpoint",
+    "one-shot final research runners",
+    "private logs and original Git history"
+  ],
+  "test_selection_fixed_before_execution": true,
+  "canonical_local_tests_preserved": true
+}
