@@ -1,5 +1,7 @@
 # Entity Resolution Workbench
 
+[Try the interactive synthetic demo](https://project-atlas-six-delta.vercel.app/projects/entity-resolution-workbench/) · [Demo source and local preview](docs/interactive-demo/README.md) · [Contact me](mailto:mehajardian@gmail.com)
+
 Compare two synthetic supplier catalogues, inspect field similarities and keep ambiguous pairs in a review queue.
 
 ## Try the synthetic example

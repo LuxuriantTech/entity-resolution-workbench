@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Entity Resolution Workbench</title>
+<link rel="stylesheet" href="site.css">
+<link rel="icon" href="data:,">
+</head>
+<body class="desk" data-demo="entity">
+<a class="skip" href="#main">Skip to comparison desk</a>
+<header class="site-head">
+<a href="https://project-atlas-six-delta.vercel.app/projects/">← five local studies</a>
+<nav aria-label="Project navigation">
+<a href="https://project-atlas-six-delta.vercel.app/projects/toolcall-replay/">ToolCall</a>
+<a aria-current="page" href="./index.html">Entity Resolution</a>
+<a href="https://project-atlas-six-delta.vercel.app/projects/postgres-migration-rehearsal/">PMR</a>
+<a href="https://project-atlas-six-delta.vercel.app/projects/api-contract-guard/">ACG</a>
+<a href="https://project-atlas-six-delta.vercel.app/projects/evidencedesk/">EvidenceDesk</a>
+</nav>
+</header>
+<main class="wrap" id="main" tabindex="-1">
+<p class="eyebrow">Local synthetic catalogue comparison</p>
+<p class="quiet">Static walkthrough • synthetic examples • application runs locally.</p>
+<h1>Keep the evidence beside the decision.</h1>
+<p class="lede">Entity Resolution Workbench compares two synthetic supplier catalogues with a deterministic matcher. Its labels are MATCH, REVIEW, and NO_MATCH; its similarities explain the matcher and are never probabilities.</p>
+<p><a href="https://github.com/LuxuriantTech/entity-resolution-workbench/tree/main">Source and local setup on GitHub</a></p>
+<div class="actions" aria-label="Entity Resolution actions">
+<a class="action primary" href="#interactive-demo">Try the demo</a>
+<a class="action" href="https://github.com/LuxuriantTech/entity-resolution-workbench/tree/main">GitHub</a>
+<a class="action" href="mailto:mehajardian@gmail.com?subject=Entity%20Resolution%20Workbench">Contact me</a>
+</div>
+<section class="demo" id="interactive-demo" aria-labelledby="entity-demo-title">
+<div class="demo-head"><div><p class="eyebrow">Interactive prepared comparison</p><h2 id="entity-demo-title">Put two records beside the reasons</h2></div><button class="action" type="button" id="entity-reset">Reset demo</button></div>
+<p>These are fictional catalogues. Selecting a pair renders a prepared, deterministic example in the browser; it does not call the local matcher.</p>
+<div class="demo-controls"><label>Pair<select id="entity-select" data-initial="review"><option value="review">Harbor Desk Lamp: review</option><option value="match">Lumen Task Chair: match illustration</option><option value="noMatch">Stoneware Mug: no-match illustration</option></select></label><label>Explanation threshold<input id="threshold" data-initial="0.75" type="number" min="0" max="1" step="0.01" value="0.75" required aria-describedby="threshold-help threshold-error"><span id="threshold-help" class="quiet">Enter a number from 0.00 to 1.00. It changes only the explanation.</span><span id="threshold-error" class="demo-status fail" aria-live="polite" hidden></span></label></div>
+<p id="entity-live" class="sr-status" aria-live="polite"></p><div id="entity-output" class="demo-output" aria-live="polite"></div>
+</section>
+<section class="grid two">
+<article class="panel record">
+<h2>Catalogue A</h2>
+<p>
+<strong>Harbor Desk Lamp</strong>
+<br>
+<span class="quiet">normalized name: harbor desk lamp<br>normalized brand: harbor<br>normalized SKU: hbl8</span>
+</p>
+</article>
+<article class="panel record">
+<h2>Catalogue B</h2>
+<p>
+<strong>Harbor Desk Lamp</strong>
+<br>
+<span class="quiet">normalized name: harbor desk lamp<br>normalized brand: harbor<br>normalized SKU: hbl9</span>
+</p>
+</article>
+</section>
+<section class="grid two spaced">
+<article>
+<h2>Recorded comparison: REVIEW</h2>
+<p>These shown records are a review case, not an asserted match. The same normalized name appears more than once, another candidate shares the top score, the SKU contradicts, and the score is below the automatic-match threshold.</p>
+</article>
+<article class="panel">
+<h2>Five recorded similarities</h2>
+<ul class="score-list">
+<li>
+<span>Product name</span>
+<strong>1.000000</strong>
+</li>
+<li>
+<span>Brand</span>
+<strong>1.000000</strong>
+</li>
+<li>
+<span>SKU</span>
+<strong>0.000000</strong>
+</li>
+<li>
+<span>Price</span>
+<strong>0.891304</strong>
+</li>
+<li>
+<span>Overall</span>
+<strong>0.739130</strong>
+</li>
+</ul>
+</article>
+</section>
+<figure class="figure">
+<img src="assets/entity-desktop-results.png" alt="Recorded local results screen showing synthetic catalogue comparison cards, with MATCH, REVIEW and NO MATCH decisions and their reasons.">
+<figcaption>Recorded desktop result on the included synthetic catalogue sample. Similarity values are explanations of a deterministic matcher, not probabilities or business-quality guarantees.</figcaption>
+</figure>
+<div class="caption-grid">
+<section>
+<h2>Why leave uncertainty visible?</h2>
+<p>A manual annotation is session-local and applies only to an engine REVIEW. It never changes the engine decision. The page shows raw and normalized values, comparison reasons, and all three decision types together.</p>
+</section>
+<details>
+<summary>Local start and stop</summary>
+<pre class="command">
+<code>uv sync --frozen
+.venv/bin/python scripts/workbench_control.py start --port 8765
+.venv/bin/python scripts/workbench_control.py stop</code>
+</pre>
+<p>Open <code>http://127.0.0.1:8765/</code>. Use only the versioned synthetic sample or small CSV inputs explicitly acknowledged as synthetic. The engine is not a hosted service.</p>
+</details>
+</div>
+<section class="notice">
+<strong>Limit</strong>This local workbench is not validated on customer data. It does not claim a hosted service, public code, deployment, real users, a human-comprehension study, WCAG certification, or production security.</section>
+</main>
+<footer class="site-foot">
+<p>I define the needs, organize AI-assisted work, review the code with AI support, test the journeys, and improve the result. AI contributes strongly to implementation; I am still developing my ability to write code independently. <a href="mailto:mehajardian@gmail.com?subject=Entity%20Resolution%20Workbench">mehajardian@gmail.com</a></p>
+</footer>
+<script src="demo.js"></script>
+</body>
+</html>
