@@ -35,7 +35,10 @@ jobs:
           chmod +x "$RUNNER_TEMP/chrome-diagnostics/google-chrome"
           echo "$RUNNER_TEMP/chrome-diagnostics" >> "$GITHUB_PATH"
       - name: Public runtime tests
-        run: uv run --frozen pytest -q
+        run: |
+          command -v dbus-run-session
+          uv run --frozen python -c 'import os; print("Inherited D-Bus address scheme:", os.environ.get("DBUS_SESSION_BUS_ADDRESS", "").split(":", 1)[0] or "unset")'
+          dbus-run-session -- uv run --frozen pytest -q
       - name: Chrome startup diagnostics on failure
         if: failure()
         run: |
