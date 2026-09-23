@@ -29,7 +29,7 @@ Stop the server when finished:
 
 This is a clean public source snapshot of the local project, not a copy of its private Git history. Application source files and synthetic input files are unchanged from the verified local implementation. Private orchestration records, author paths, archived build-proof machinery and one-shot research runners are not distributed. Their canonical local versions and history remain preserved.
 
-The tests shipped here cover the public runtime. They are a defined subset of the larger local verification suite, not a claim that every historical control is reproduced by this package. `SOURCE_MANIFEST.json` identifies every copied file, and `PUBLIC_RELEASE_SCOPE.json` lists the selected runtime tests and the omitted verification categories.
+The tests shipped here cover the public runtime. They are a defined subset of the larger local verification suite, not a claim that every historical control is reproduced by this package. `SOURCE_MANIFEST.json` records the original copied source snapshot, and `PUBLIC_RELEASE_SCOPE.json` lists the selected runtime tests and the omitted verification categories. The later public CI amendment is recorded in `PUBLIC_AMENDMENTS.json`; the original source manifest remains unchanged.
 
 The full `pytest` command also needs local Google Chrome available as `google-chrome` or `google-chrome-stable` for the narrow-render tests. The matcher and local workbench demo do not need Chrome.
 
@@ -42,9 +42,11 @@ uv run --frozen mypy src
 gitleaks protect --staged --redact --verbose
 ```
 
-The prepared [CI workflow](.github/workflows/ci.yml) runs the public tests, Ruff and mypy on GitHub after publication. Its presence here is not a hosted CI result.
+The [CI workflow](.github/workflows/ci.yml) runs the public tests, Ruff and mypy on GitHub. Check the [Actions run](https://github.com/LuxuriantTech/entity-resolution-workbench/actions) for the commit you review; a local result does not establish a hosted CI result.
 
-Local check on 2026-09-23 (this public snapshot): `uv run --frozen pytest -q` returned 199 passed; the Ruff format and lint commands above passed, and `uv run --frozen mypy src` found no issues in 18 source files. This is software verification of the distributed test selection, not a measured matching precision or business accuracy result.
+Initial local check on 2026-09-23 (public commit `51c95528`): `uv run --frozen pytest -q` returned 199 passed; the Ruff format and lint commands above passed, and `uv run --frozen mypy src` found no issues in 18 source files. The first hosted check for that commit timed out after five seconds waiting for Chrome's initial `Target.getTargets` response. A separate [cold-start diagnostic job](https://github.com/LuxuriantTech/entity-resolution-workbench/actions/runs/35801835842/job/106993702096) observed that response after 9.820 seconds.
+
+The public test helper now allows 30 seconds for only the first `Target.getTargets` response. Other commands retain a five-second deadline that unsolicited events cannot reset. Four regression cases cover the timeout behavior. No matcher, synthetic input, private holdout or application runtime was changed for this CI amendment. A separate local check on 2026-09-23 returned 203 passed in 17.10 seconds; Ruff format checked 39 files, Ruff lint passed, and mypy found no issues in 18 source files. These checks verify the distributed test selection, not matching precision or business accuracy.
 
 ## Limits
 

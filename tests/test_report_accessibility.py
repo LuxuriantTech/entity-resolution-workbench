@@ -221,8 +221,7 @@ class CDPPipeClient:
             assert written > 0, "Chrome closed its DevTools input pipe"
             remaining = remaining[written:]
 
-    def _receive_message(self) -> dict[str, Any]:
-        deadline = time.monotonic() + 5
+    def _receive_message(self, deadline: float) -> dict[str, Any]:
         while True:
             delimiter = self._buffer.find(0)
             if delimiter >= 0:
@@ -241,7 +240,10 @@ class CDPPipeClient:
             assert chunk, "Chrome closed its DevTools output pipe"
             self._buffer.extend(chunk)
 
-    def command(self, method: str, params: dict[str, object] | None = None) -> dict[str, Any]:
+    def command(
+        self, method: str, params: dict[str, object] | None = None, *, timeout: float = 5
+    ) -> dict[str, Any]:
+        deadline = time.monotonic() + timeout
         self._request_id += 1
         request_id = self._request_id
         request: dict[str, object] = {
@@ -253,13 +255,74 @@ class CDPPipeClient:
             request["sessionId"] = self._session_id
         self._send_message(request)
         while True:
-            response = self._receive_message()
+            response = self._receive_message(deadline)
             if response.get("id") != request_id:
                 continue
             assert "error" not in response, response
             result = response.get("result")
             assert isinstance(result, dict)
             return result
+
+
+@pytest.mark.parametrize(
+    ("startup", "response_delay", "should_succeed"),
+    [(True, 6.0, True), (False, 6.0, False), (True, None, False)],
+)
+def test_cdp_pipe_bounds_cold_startup_and_normal_commands(
+    monkeypatch: pytest.MonkeyPatch,
+    startup: bool,
+    response_delay: float | None,
+    should_succeed: bool,
+) -> None:
+    clock = [0.0]
+    client = CDPPipeClient(123, 456)
+
+    def delayed_read(
+        reads: list[int], writes: list[int], errors: list[int], timeout: float
+    ) -> tuple[list[int], list[int], list[int]]:
+        ready = response_delay is not None and response_delay < timeout
+        clock[0] += response_delay if ready and response_delay is not None else timeout
+        return (reads if ready else [], [], [])
+
+    monkeypatch.setattr(time, "monotonic", lambda: clock[0])
+    monkeypatch.setattr(select, "select", delayed_read)
+    monkeypatch.setattr(os, "write", lambda fd, data: len(data))
+    monkeypatch.setattr(os, "read", lambda fd, size: b'{"id":1,"result":{"value":42}}\0')
+
+    def send() -> dict[str, Any]:
+        if startup:
+            return client.command("Target.getTargets", timeout=30)
+        return client.command("Runtime.evaluate")
+
+    if should_succeed:
+        assert send() == {"value": 42}
+        assert clock[0] == 6
+    else:
+        with pytest.raises(AssertionError, match="Chrome did not answer"):
+            send()
+        assert clock[0] == (30 if startup else 5)
+
+
+def test_cdp_pipe_events_do_not_restart_command_deadline(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    clock = [0.0]
+    client = CDPPipeClient(123, 456)
+    messages = iter([b'{"method":"unsolicited.event"}\0', b'{"id":1,"result":{}}\0'])
+
+    def delayed_read(
+        reads: list[int], writes: list[int], errors: list[int], timeout: float
+    ) -> tuple[list[int], list[int], list[int]]:
+        clock[0] += min(4.0, timeout)
+        return (reads if timeout >= 4 else [], [], [])
+
+    monkeypatch.setattr(time, "monotonic", lambda: clock[0])
+    monkeypatch.setattr(select, "select", delayed_read)
+    monkeypatch.setattr(os, "write", lambda fd, data: len(data))
+    monkeypatch.setattr(os, "read", lambda fd, size: next(messages))
+    with pytest.raises(AssertionError, match="Chrome did not answer"):
+        client.command("Runtime.evaluate")
+    assert clock[0] == 5
 
 
 def _transfer_parent_pipe_ownership(client: CDPPipeClient, read_fd: int, write_fd: int) -> None:
@@ -329,7 +392,8 @@ def _start_chrome(chrome: str, profile: Path) -> tuple[subprocess.Popen[bytes], 
         client = CDPPipeClient()
         _transfer_parent_pipe_ownership(client, parent_read_fd, parent_write_fd)
         ownership_transferred = True
-        targets = client.command("Target.getTargets").get("targetInfos")
+        # Hosted Chrome cold startup was measured at 9.82 s; later commands keep 5 s.
+        targets = client.command("Target.getTargets", timeout=30).get("targetInfos")
         assert isinstance(targets, list) and targets, "Chrome DevTools pipe did not start"
         page = next(
             (
@@ -825,7 +889,10 @@ def test_chrome_gate_cleans_up_process_and_pipes_when_bootstrap_fails(
         self: CDPPipeClient,
         method: str,
         params: dict[str, object] | None = None,
+        *,
+        timeout: float = 5,
     ) -> dict[str, Any]:
+        assert method == "Target.getTargets" and timeout == 30
         if not client_descriptors:
             client_descriptors.extend((self._read_fd, self._write_fd))
         raise RuntimeError("forced CDP bootstrap failure")

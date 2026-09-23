@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "amendment": "chrome_initial_cdp_response_timeout",
+  "recorded_on": "2026-09-23",
+  "base_public_commit": "51c95528ff0a26d156dc199f3368d6711505115c",
+  "original_source_manifest": {
+    "path": "SOURCE_MANIFEST.json",
+    "sha256": "25a131c808e9d507b933822d3f40be11fd2f50c656827a2b186ea0d55f718f58",
+    "status": "unchanged_historical_release_record"
+  },
+  "amended_files": [
+    {
+      "path": "tests/test_report_accessibility.py",
+      "original_sha256_from_source_manifest": "70c5d293d5a28150f511c147ddc3b54ba91327b80814425c96238a5e2eccd203",
+      "amended_sha256": "26ac3f61581d93808cc953c536a79ef7751e1039e1cec833e41e84b151d58d04",
+      "change": "Allow 30 seconds only for the initial Target.getTargets response; keep five seconds for other commands with one absolute deadline, and add four regression cases."
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "original_sha256_from_base_commit": "6118f13d3a81a2ed19f45868b2cdbf522a5a3682271714fd6ee364aac79dc8a3",
+      "amended_sha256": "d87841adb1502167ad45a7f5103799fe777779c35e1e2a9847684a090c58992f",
+      "change": "Bound the CI job and retain Chrome startup diagnostics on failure."
+    }
+  ],
+  "diagnostic": {
+    "job_url": "https://github.com/LuxuriantTech/entity-resolution-workbench/actions/runs/35801835842/job/106993702096",
+    "chrome_alive_at_seconds": 5.005,
+    "first_response_seconds": 9.820,
+    "bootstrap_seconds": 10.405,
+    "runner_comparison_limit": "Diagnostic used Chrome 152; normal checks used Chrome 153 on different runners."
+  },
+  "local_verification": {
+    "date": "2026-09-23",
+    "command": "uv run --frozen pytest -q",
+    "result": "203 passed in 17.10s",
+    "ruff_format": "39 files already formatted",
+    "ruff_lint": "All checks passed",
+    "mypy": "18 source files without issues"
+  },
+  "hosted_ci_for_amendment_at_recording": "not yet observed",
+  "unchanged_scope": [
+    "matcher and application runtime",
+    "synthetic inputs",
+    "private holdout"
+  ]
+}

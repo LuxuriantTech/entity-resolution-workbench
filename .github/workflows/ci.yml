@@ -10,6 +10,7 @@ permissions:
 
 jobs:
   checks:
+    timeout-minutes: 10
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
@@ -23,9 +24,25 @@ jobs:
       - name: Install locked dependencies
         run: uv sync --frozen
       - name: Verify Chrome for narrow-render tests
-        run: command -v google-chrome || command -v google-chrome-stable
+        run: |
+          chrome_binary=$(command -v google-chrome || command -v google-chrome-stable)
+          "$chrome_binary" --version
+          echo "CHROME_REAL_EXECUTABLE=$chrome_binary" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/chrome-diagnostics"
+          cat > "$RUNNER_TEMP/chrome-diagnostics/google-chrome" <<'SH'
+          #!/bin/sh
+          exec "$CHROME_REAL_EXECUTABLE" "$@" 2>> "$RUNNER_TEMP/chrome-startup.log"
+          SH
+          chmod +x "$RUNNER_TEMP/chrome-diagnostics/google-chrome"
+          echo "$RUNNER_TEMP/chrome-diagnostics" >> "$GITHUB_PATH"
       - name: Public runtime tests
         run: uv run --frozen pytest -q
+      - name: Chrome startup diagnostics on failure
+        if: failure()
+        run: |
+          if test -f "$RUNNER_TEMP/chrome-startup.log"; then
+            tail -200 "$RUNNER_TEMP/chrome-startup.log"
+          fi
       - name: Ruff format
         run: uv run --frozen ruff format --check .
       - name: Ruff lint
