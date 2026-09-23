@@ -35,10 +35,7 @@ jobs:
           chmod +x "$RUNNER_TEMP/chrome-diagnostics/google-chrome"
           echo "$RUNNER_TEMP/chrome-diagnostics" >> "$GITHUB_PATH"
       - name: Public runtime tests
-        run: |
-          command -v dbus-run-session
-          uv run --frozen python -c 'import os; print("Inherited D-Bus address scheme:", os.environ.get("DBUS_SESSION_BUS_ADDRESS", "").split(":", 1)[0] or "unset")'
-          dbus-run-session -- uv run --frozen pytest -q
+        run: uv run --frozen pytest -q
       - name: Chrome startup diagnostics on failure
         if: failure()
         run: |
@@ -51,3 +48,118 @@ jobs:
         run: uv run --frozen ruff check .
       - name: Mypy
         run: uv run --frozen mypy src
+
+  bootstrap_diagnostic:
+    timeout-minutes: 5
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: '3.12.14'
+      - name: Install pinned uv
+        run: python -m pip install uv==0.11.7
+      - name: Install locked dependencies
+        run: uv sync --frozen
+      - name: Verify Chrome for narrow-render tests
+        run: |
+          chrome_binary=$(command -v google-chrome || command -v google-chrome-stable)
+          echo "CHROME_REAL_EXECUTABLE=$chrome_binary" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/chrome-diagnostics"
+          cat > "$RUNNER_TEMP/chrome-diagnostics/google-chrome" <<'SH'
+          #!/bin/sh
+          exec "$CHROME_REAL_EXECUTABLE" "$@" 2>> "$RUNNER_TEMP/chrome-startup.log"
+          SH
+          chmod +x "$RUNNER_TEMP/chrome-diagnostics/google-chrome"
+          echo "$RUNNER_TEMP/chrome-diagnostics" >> "$GITHUB_PATH"
+      - name: Observe one cold Chrome bootstrap (diagnostic only)
+        run: |
+          uv run --frozen python - <<'PY'
+          """Diagnostic only: observe the frozen test helper beyond its 5 s timeout."""
+          import importlib.util
+          import json
+          import os
+          from pathlib import Path
+          import select
+          import subprocess
+          import sys
+          import tempfile
+          import time
+
+          sys.path.insert(0, str(Path("tests").resolve()))
+          spec = importlib.util.spec_from_file_location("report_test", "tests/test_report_accessibility.py")
+          module = importlib.util.module_from_spec(spec)
+          sys.modules[spec.name] = module
+          spec.loader.exec_module(module)
+          real_popen = subprocess.Popen
+          children = []
+          diagnostic_deadline = time.monotonic() + 30
+
+
+          def capture_process(*args, **kwargs):
+              print(json.dumps({"event": "launch", "pass_fds": {str(fd): os.readlink(f"/proc/self/fd/{fd}") for fd in kwargs.get("pass_fds", ())}}), flush=True)
+              process = real_popen(*args, **kwargs)
+              children.append(process)
+              return process
+
+
+          def receive_observed(self):
+              started = time.monotonic()
+              observed = False
+              while True:
+                  delimiter = self._buffer.find(0)
+                  if delimiter >= 0:
+                      payload = bytes(self._buffer[:delimiter])
+                      del self._buffer[: delimiter + 1]
+                      if not payload:
+                          continue
+                      message = json.loads(payload)
+                      print(json.dumps({"event": "message", "seconds": round(time.monotonic() - started, 3), "id": message.get("id"), "method": message.get("method")}), flush=True)
+                      return message
+                  elapsed = time.monotonic() - started
+                  if elapsed >= 5 and not observed:
+                      process = children[-1]
+                      descriptors = {}
+                      for number in (3, 4):
+                          try:
+                              descriptors[str(number)] = os.readlink(f"/proc/{process.pid}/fd/{number}")
+                          except OSError as exc:
+                              descriptors[str(number)] = type(exc).__name__
+                      print(json.dumps({"event": "original_deadline", "seconds": round(elapsed, 3), "exit_code": process.poll(), "child_descriptors": descriptors, "cmdline": Path(f"/proc/{process.pid}/cmdline").read_bytes()[:1000].decode("utf-8", errors="replace").replace("\0", " ")}), flush=True)
+                      observed = True
+                  assert time.monotonic() < diagnostic_deadline, "Diagnostic global limit reached (30 s)"
+                  readable, _, _ = select.select([self._read_fd], [], [], min(1, max(0, diagnostic_deadline - time.monotonic())))
+                  if readable:
+                      chunk = os.read(self._read_fd, 65536)
+                      assert chunk, "Chrome closed its DevTools output pipe"
+                      self._buffer.extend(chunk)
+
+
+          subprocess.Popen = capture_process
+          module.CDPPipeClient._receive_message = receive_observed
+          for attempt in range(1, 2):
+              with tempfile.TemporaryDirectory(prefix="chrome-probe-") as folder:
+                  started = time.monotonic()
+                  process, client = module._start_chrome(module._chrome(), Path(folder) / "profile")
+                  print(json.dumps({"event": "bootstrap_ready", "attempt": attempt, "seconds": round(time.monotonic() - started, 3)}), flush=True)
+                  try:
+                      result = client.command("Runtime.evaluate", {"expression": "6 * 7", "returnByValue": True})
+                      assert result["result"]["value"] == 42
+                  finally:
+                      client.close()
+                      process.terminate()
+                      try:
+                          process.wait(timeout=5)
+                      except subprocess.TimeoutExpired:
+                          process.kill()
+                          process.wait(timeout=5)
+          PY
+      - name: Diagnostic Chrome version and stderr
+        if: always()
+        run: |
+          "$CHROME_REAL_EXECUTABLE" --version
+          if test -f "$RUNNER_TEMP/chrome-startup.log"; then
+            tail -200 "$RUNNER_TEMP/chrome-startup.log"
+          fi
