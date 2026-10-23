@@ -1,6 +1,6 @@
 # Entity Resolution Workbench
 
-[Try the interactive synthetic demo](https://ardian-mehaj-portfolio.vercel.app/projects/entity-resolution-workbench/) · [Demo source and local preview](docs/interactive-demo/README.md) · [Contact me](mailto:mehajardian@gmail.com)
+[Try the interactive synthetic demo](https://ardian-mehaj-portfolio.vercel.app/projects/entity-resolution-workbench/) · [Historical prepared walkthrough and local preview](docs/interactive-demo/README.md) · [Contact me](mailto:mehajardian@gmail.com)
 
 Compare two synthetic supplier catalogues, inspect field similarities and keep ambiguous pairs in a review queue.
 
@@ -17,7 +17,7 @@ uv sync --frozen
 
 Open the loopback URL printed by the launcher. Prepare the bundled synthetic catalogues, run the matcher and open Needs review. Each pair exposes both records, component similarities and decision reasons. MATCH, REVIEW and NO_MATCH are valid outcomes; REVIEW preserves uncertainty. Similarities are not probabilities.
 
-The hosted [static walkthrough](docs/interactive-demo/README.md) has a threshold control that changes only its explanatory annotation. It does not rerun the matcher or alter an engine decision. In the local workbench, `REVIEW` is the deterministic engine outcome for an ambiguous pair; a separate session-local human annotation can record a review choice without changing that outcome.
+The public demo is a separate, simplified JavaScript calculation in the browser. It compares one edited pair using name-token overlap, exact normalized brand and SKU comparisons, and relative price similarity. Its bounded threshold helps explain the displayed score; neither the score nor the threshold is a probability, and the demo does not call or reproduce this Python matcher. It omits catalogue-level candidate competition, blocking and review decisions. The [historical prepared walkthrough](docs/interactive-demo/README.md) remains available as a separate, non-recalculating local page. In this Python workbench, `REVIEW` is a deterministic engine outcome for an ambiguous pair; a separate session-local human annotation can record a review choice without changing that outcome.
 
 Stop the server when finished:
 
