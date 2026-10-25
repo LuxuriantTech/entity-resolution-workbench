@@ -1,6 +1,6 @@
 # Entity Resolution Workbench
 
-[Try the interactive synthetic demo](https://ardian-mehaj-portfolio.vercel.app/projects/entity-resolution-workbench/) · [Historical prepared walkthrough and local preview](docs/interactive-demo/README.md) · [Contact me](mailto:mehajardian@gmail.com)
+[Try the interactive synthetic demo](https://ardianmehaj.dev/projects/entity-resolution-workbench/) · [Historical prepared walkthrough and local preview](docs/interactive-demo/README.md) · [Contact me](mailto:mehajardian@gmail.com)
 
 Compare two synthetic supplier catalogues, inspect field similarities and keep ambiguous pairs in a review queue.
 
